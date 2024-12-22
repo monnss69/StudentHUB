@@ -1,11 +1,8 @@
 import { ReactNode } from 'react';
 import { Link } from 'react-router-dom';
 
-interface LayoutProps {
-  children: ReactNode;
-}
-
-const Layout = ({ children }: LayoutProps) => {
+// Add proper TypeScript typing for children
+const Layout = ({ children }: { children: ReactNode }) => {
   return (
     <div className="min-h-screen bg-gray-100">
       <nav className="bg-white shadow-sm">
