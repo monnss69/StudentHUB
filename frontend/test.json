@@ -1,0 +1,119 @@
+{
+    "users": [
+      {
+        "id": "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11",
+        "username": "john_lee",
+        "email": "john.lee@student.edu.sg",
+        "avatarUrl": "https://api.dicebear.com/7.x/avataaars/svg?seed=john",
+        "createdAt": "2024-01-15T08:00:00Z",
+        "updatedAt": "2024-01-15T08:00:00Z"
+      },
+      {
+        "id": "b0eebc99-9c0b-4ef8-bb6d-6bb9bd380a12",
+        "username": "sarah_tan",
+        "email": "sarah.tan@student.edu.sg",
+        "avatarUrl": "https://api.dicebear.com/7.x/avataaars/svg?seed=sarah",
+        "createdAt": "2024-01-16T09:00:00Z",
+        "updatedAt": "2024-01-16T09:00:00Z"
+      },
+      {
+        "id": "c0eebc99-9c0b-4ef8-bb6d-6bb9bd380a13",
+        "username": "prof_wong",
+        "email": "wong@faculty.edu.sg",
+        "avatarUrl": "https://api.dicebear.com/7.x/avataaars/svg?seed=wong",
+        "createdAt": "2024-01-17T10:00:00Z",
+        "updatedAt": "2024-01-17T10:00:00Z"
+      }
+    ],
+    "categories": [
+      {
+        "id": "d0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11",
+        "name": "Academic Hub",
+        "description": "For academic resources and discussions",
+        "createdAt": "2024-01-15T08:00:00Z",
+        "postCount": 15
+      },
+      {
+        "id": "e0eebc99-9c0b-4ef8-bb6d-6bb9bd380a12",
+        "name": "Campus Community",
+        "description": "For social and lifestyle aspects",
+        "createdAt": "2024-01-15T08:00:00Z",
+        "postCount": 8
+      },
+      {
+        "id": "f0eebc99-9c0b-4ef8-bb6d-6bb9bd380a13",
+        "name": "Platform Support",
+        "description": "For platform feedback and support",
+        "createdAt": "2024-01-15T08:00:00Z",
+        "postCount": 3
+      }
+    ],
+    "posts": [
+      {
+        "id": "g0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11",
+        "title": "Looking for Study Group - Mathematics",
+        "content": "Hi everyone! Looking to form a study group for Advanced Mathematics. Anyone interested in joining? We can meet twice a week to practice problems and prepare for upcoming exams.",
+        "authorId": "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11",
+        "author": "john_lee",
+        "categoryId": "d0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11",
+        "category": "Academic Hub",
+        "tags": ["Study Group", "Mathematics", "Homework"],
+        "commentCount": 5,
+        "createdAt": "2024-01-18T08:30:00Z",
+        "updatedAt": "2024-01-18T08:30:00Z"
+      },
+      {
+        "id": "h0eebc99-9c0b-4ef8-bb6d-6bb9bd380a12",
+        "title": "Campus Event: Tech Meetup",
+        "content": "Join us for the upcoming tech meetup this Friday! We'll be discussing the latest trends in AI and machine learning. Free pizza provided!",
+        "authorId": "b0eebc99-9c0b-4ef8-bb6d-6bb9bd380a12",
+        "author": "sarah_tan",
+        "categoryId": "e0eebc99-9c0b-4ef8-bb6d-6bb9bd380a12",
+        "category": "Campus Community",
+        "tags": ["Events", "Technology", "Networking"],
+        "commentCount": 3,
+        "createdAt": "2024-01-19T09:30:00Z",
+        "updatedAt": "2024-01-19T09:30:00Z"
+      }
+    ],
+    "comments": [
+      {
+        "id": "i0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11",
+        "content": "I'm interested! What days were you thinking of meeting?",
+        "postId": "g0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11",
+        "authorId": "b0eebc99-9c0b-4ef8-bb6d-6bb9bd380a12",
+        "author": "sarah_tan",
+        "createdAt": "2024-01-18T09:00:00Z",
+        "updatedAt": "2024-01-18T09:00:00Z"
+      },
+      {
+        "id": "j0eebc99-9c0b-4ef8-bb6d-6bb9bd380a12",
+        "content": "Great initiative! I can help moderate the study group sessions.",
+        "postId": "g0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11",
+        "authorId": "c0eebc99-9c0b-4ef8-bb6d-6bb9bd380a13",
+        "author": "prof_wong",
+        "createdAt": "2024-01-18T10:00:00Z",
+        "updatedAt": "2024-01-18T10:00:00Z"
+      }
+    ],
+    "tags": [
+      {
+        "id": "k0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11",
+        "name": "Study Group",
+        "postCount": 8,
+        "createdAt": "2024-01-15T08:00:00Z"
+      },
+      {
+        "id": "l0eebc99-9c0b-4ef8-bb6d-6bb9bd380a12",
+        "name": "Events",
+        "postCount": 5,
+        "createdAt": "2024-01-15T08:00:00Z"
+      },
+      {
+        "id": "m0eebc99-9c0b-4ef8-bb6d-6bb9bd380a13",
+        "name": "Mathematics",
+        "postCount": 12,
+        "createdAt": "2024-01-15T08:00:00Z"
+      }
+    ]
+  }
