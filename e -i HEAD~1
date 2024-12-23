@@ -1,0 +1,38 @@
+[33mcommit 5740eeb1614deee0aace094972682d1b36276d48[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m
+Author: Pham Hai Minh <phminh2105@gmail.com>
+Date:   Mon Dec 23 23:21:15 2024 +0800
+
+    Adding database connection and perform regular queries, added front-end design
+
+[33mcommit 21186aa732e2453113e52345b79fd6a281a97131[m
+Author: Pham Hai Minh <phminh2105@gmail.com>
+Date:   Sun Dec 22 17:54:48 2024 +0800
+
+    Adding post in front-end
+
+[33mcommit 375ad65963591bd284b1c8c52984746239331632[m
+Merge: 681d161 7590798
+Author: Pham Hai Minh <phminh2105@gmail.com>
+Date:   Sun Dec 22 11:35:06 2024 +0800
+
+    Merge pull request #1 from monnss69/vite-optimization
+    
+    Optimize frontend with Vite configuration
+
+[33mcommit 75907983a3a0a02bea8ce9aea2fcf7e4158da81b[m
+Author: openhands <openhands@all-hands.dev>
+Date:   Sun Dec 22 03:34:05 2024 +0000
+
+    Optimize frontend with Vite configuration
+
+[33mcommit 681d161818573a23f84894d0959431568fd4359b[m
+Author: Pham Hai Minh <phminh2105@gmail.com>
+Date:   Sun Dec 22 11:27:51 2024 +0800
+
+    Modify using Vite instead of Create-React-App
+
+[33mcommit 00d0de372e6dd9674cdfe384cbba1c46d0b2354e[m[33m ([m[1;31morigin/feature/initial-setup[m[33m)[m
+Author: openhands <openhands@all-hands.dev>
+Date:   Thu Dec 19 15:00:46 2024 +0000
+
+    Initial project setup with frontend, backend, and database structure
