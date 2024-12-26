@@ -15,9 +15,9 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
-          <Route path="/academic-hub" element={<AcademicHub />} />
-          <Route path="/campus-community" element={<CampusCommunity />} />
-          <Route path="/platform-support" element={<PlatformSupport />} />
+          <Route path="/post/academic-hub" element={<AcademicHub />} />
+          <Route path="/post/campus-community" element={<CampusCommunity />} />
+          <Route path="/post/platform-support" element={<PlatformSupport />} />
         </Routes>
       </Layout>
     </Router>

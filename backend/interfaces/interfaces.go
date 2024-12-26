@@ -7,7 +7,6 @@ import (
 	"github.com/google/uuid"
 )
 
-// Models (you'll need these for the interfaces)
 type User struct {
 	ID           uuid.UUID `gorm:"type:uuid;primary_key;default:gen_random_uuid()"`
 	Username     string    `gorm:"type:varchar(50);unique;not null"`
