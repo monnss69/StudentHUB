@@ -15,7 +15,7 @@ var DB *gorm.DB
 // Initialize initializes the database connection
 func Initialize() {
 	var err error
-	DB, err = gorm.Open(postgres.Open("host=localhost user=postgres password=... dbname=postgres port=5432 sslmode=disable"), &gorm.Config{})
+	DB, err = gorm.Open(postgres.Open("host=localhost user=postgres password= dbname=postgres port=5432 sslmode=disable"), &gorm.Config{})
 	if err != nil {
 		log.Fatal("Failed to connect to database:", err)
 	}
