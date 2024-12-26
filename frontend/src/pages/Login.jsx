@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { User, Lock, GraduationCap } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 const Login = () => {
   const [formData, setFormData] = useState({
@@ -84,7 +85,7 @@ const Login = () => {
         {/* Additional Links */}
         <div className="mt-6 text-center text-sm">
           <a href="#" className="text-teal-600 hover:text-teal-700 transition-colors">
-            New to StudentHub? Create an account
+            <Link to="/register">New to StudentHub? Create an account</Link>
           </a>
         </div>
       </div>
