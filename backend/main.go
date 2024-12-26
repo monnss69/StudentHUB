@@ -8,10 +8,12 @@ import (
 )
 
 func main() {
+	// Connect to database
 	db.Initialize()
 
 	router := gin.Default()
 
+	// Set up CORS
 	router.Use(cors.New(cors.Config{
 		AllowOrigins:     []string{"http://localhost:3000"}, // Your React app URL
 		AllowMethods:     []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
@@ -19,9 +21,11 @@ func main() {
 		AllowCredentials: true,
 	}))
 
-	router.POST("/auth/register", db.CreateUser)
+	// Route handling
+	router.POST("/create", db.CreateUser)
 	router.GET("/users", db.GetAllUser)
 	router.GET("/users/:id", db.GetUserID)
 	router.GET("/post/:category", db.GetCategoryPost)
+	router.GET("/comment/:post_id", db.GetCommentPost)
 	router.Run(":3333")
 }

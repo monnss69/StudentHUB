@@ -88,3 +88,17 @@ func GetCategoryPost(c *gin.Context) {
 
 	c.JSON(http.StatusOK, posts)
 }
+
+func GetCommentPost(c *gin.Context) {
+	postID := c.Param("post_id")
+
+	var comment []interfaces.Comment
+
+	result := DB.Model(&interfaces.Comment{}).Where("PostID = ?", postID).Find(&comment)
+	if result.Error != nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": "Comment not found"})
+		return
+	}
+
+	c.JSON(http.StatusOK, comment)
+}
