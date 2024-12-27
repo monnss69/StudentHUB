@@ -1,122 +1,168 @@
 # StudentHub Singapore
 
-A forum platform for academic resources, campus community, and platform support.
+StudentHub Singapore is a full-stack web application built to serve as a forum platform for Singapore students. It features dedicated spaces for academic discussions, campus community engagement, and platform support.
+
+## Features
+
+- **User Authentication**: Complete registration and login system with password protection
+- **Categorical Forums**: Three main discussion areas:
+  - Academic Hub: For study-related discussions and resources
+  - Campus Community: For student life and social activities
+  - Platform Support: For technical assistance and feedback
+- **Post Management**: Create, read, update, and delete posts across categories
+- **Modern UI**: Responsive design with animations and intuitive navigation
+- **Real-time Updates**: Dynamic content loading and state management
+
+## Tech Stack
+
+### Frontend
+- React 19.0 with Vite
+- TypeScript for type safety
+- TailwindCSS for styling
+- Framer Motion for animations
+- Axios for API communication
+- React Router v7 for navigation
+- Lucide React for icons
+
+### Backend
+- Go with Gin framework
+- GORM for database operations
+- PostgreSQL with UUID support
+- JWT planned for authentication
+- CORS enabled for development
+
+## Getting Started
+
+### Frontend Setup
+
+```bash
+# Navigate to frontend directory
+cd frontend
+
+# Install dependencies
+npm install
+
+# Start development server
+npm run dev
+```
+
+The frontend will run on `http://localhost:3000`
+
+### Backend Setup
+
+```bash
+# Navigate to backend directory
+cd backend
+
+# Install Go dependencies
+go mod tidy
+
+# Start the server
+go run backend
+```
+
+The backend API will run on `http://localhost:3333`
+
+### Environment Setup
+
+Create a `.env` file in the backend directory:
+
+```env
+DB_HOST=localhost
+DB_PORT=5432
+DB_USER=postgres
+DB_PASSWORD=!
+DB_NAME=postgres
+```
+
+## API Endpoints
+
+### Users
+- `POST /users` - Register new user
+- `GET /users` - Get all users
+- `GET /users/:id` - Get user by ID
+- `DELETE /users/:id` - Delete user
+
+### Posts
+- `POST /post` - Create new post
+- `GET /post/:post_id` - Get specific post
+- `PUT /post/:post_id` - Edit post
+- `DELETE /post/:post_id` - Delete post
+- `GET /:category` - Get posts by category
+
+### Comments
+- `GET /comment/:post_id` - Get comments for a post
+
+### Categories
+- `GET /category` - Get all categories
 
 ## Project Structure
 
 ```
-StudentHUB/
-├── frontend/           # React TypeScript frontend
+StudentHub/
+├── frontend/
 │   ├── src/
-│   │   ├── components/  # Reusable UI components
-│   │   ├── pages/       # Page components
-│   │   ├── types/       # TypeScript interfaces
-│   │   ├── services/    # API services
-│   │   └── hooks/       # Custom React hooks
-│   └── ...
-├── backend/            # Go backend
-│   ├── cmd/
-│   │   └── api/        # Main application entry
-│   ├── handlers/       # Request handlers
-│   ├── middleware/     # Custom middleware
-│   ├── models/         # Data models
-│   └── db/            # Database operations
-└── database/          # Database schema and migrations
+│   │   ├── components/          # Reusable UI components
+│   │   │   ├── Layout.tsx      # Main layout wrapper
+│   │   │   ├── Post.jsx        # Post display component
+│   │   │   └── UploadButton.jsx # Post creation button
+│   │   ├── pages/              # Page components
+│   │   │   ├── Home.jsx
+│   │   │   ├── Login.jsx
+│   │   │   ├── Register.jsx
+│   │   │   └── [category].jsx  # Category pages
+│   │   ├── services/           # API services
+│   │   │   ├── api.ts         # API functions
+│   │   │   └── types.ts       # TypeScript interfaces
+│   │   └── App.jsx            # Main app component
+│   ├── package.json
+│   ├── tsconfig.json
+│   └── vite.config.js
+│
+└── backend/
+    ├── db/                    # Database operations
+    │   └── db.go
+    ├── interfaces/            # Data models
+    │   └── interfaces.go
+    ├── main.go               # Server entry point
+    └── go.mod
 ```
-
-## Setup Instructions
-
-### Prerequisites
-
-- Node.js (v16 or later)
-- Go (v1.16 or later)
-- PostgreSQL (v13 or later)
-
-### Frontend Setup
-
-1. Navigate to the frontend directory:
-   ```bash
-   cd frontend
-   ```
-
-2. Install dependencies:
-   ```bash
-   npm install
-   ```
-
-3. Start the development server:
-   ```bash
-   npm start
-   ```
-
-### Backend Setup
-
-1. Navigate to the backend directory:
-   ```bash
-   cd backend
-   ```
-
-2. Install Go dependencies:
-   ```bash
-   go mod tidy
-   ```
-
-3. Create a .env file:
-   ```
-   DB_HOST=localhost
-   DB_PORT=5432
-   DB_USER=your_user
-   DB_PASSWORD=your_password
-   DB_NAME=studenthub
-   JWT_SECRET=your_secret_key
-   ```
-
-4. Run the server:
-   ```bash
-   go run cmd/api/main.go
-   ```
-
-### Database Setup
-
-1. Create a new PostgreSQL database:
-   ```bash
-   createdb studenthub
-   ```
-
-2. Apply the schema:
-   ```bash
-   psql -d studenthub -f database/schema.sql
-   ```
 
 ## Development Notes
 
 ### Frontend
-- Components are organized by feature
-- Use TypeScript for type safety
-- Follow React best practices and hooks
-- Use Tailwind CSS for styling
+- Built with React and TypeScript for better type safety
+- Uses Tailwind CSS for responsive design
+- Implements client-side routing with React Router
+- Features smooth animations with Framer Motion
+- Organized by feature with separate components and pages
+- Type-safe API calls with Axios
 
 ### Backend
-- RESTful API design
-- JWT for authentication
-- Middleware for logging and auth
-- GORM for database operations
-
-### Database
+- RESTful API design with Gin framework
 - UUID for primary keys
-- Timestamps for auditing
-- Proper indexing for performance
-- Foreign key constraints
+- GORM for database operations
+- CORS configured for development
+- Structured error handling
+- Category-based post organization
 
-## Next Steps
+### Planned Features
+- User authentication with JWT
+- Rich text editor for posts
+- Image upload support
+- Real-time notifications
+- Search functionality
+- User profiles
+- Comment threading
 
-1. Implement authentication logic
-2. Add form validation
-3. Implement error handling
-4. Add loading states
-5. Implement search functionality
-6. Add pagination
-7. Implement file uploads
-8. Add user profiles
-9. Implement notifications
-10. Add admin features
+## Contributing
+
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/YourFeature`)
+3. Commit your changes (`git commit -m 'Add some feature'`)
+4. Push to the branch (`git push origin feature/YourFeature`)
+5. Create a Pull Request
+
+## License
+
+This project is open source and available under the MIT License.
