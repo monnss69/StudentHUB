@@ -22,14 +22,25 @@ func main() {
 	}))
 
 	// Route handling
+
+	// Users Route
 	router.POST("/users", db.CreateUser)
 	router.DELETE("/users/:id", db.DeleteUser)
 	router.GET("/users", db.GetAllUser)
 	router.GET("/users/:id", db.GetUserID)
+
+	// Post route
 	router.POST("/post", db.CreatePost)
-	router.DELETE("/post/:id", db.DeletePost)
-	router.GET("/post/:id", db.GetPostID)
-	router.GET("/post/:category", db.GetCategoryPost)
+	router.DELETE("/post/:post_id", db.DeletePost)
+	router.GET("/post/:post_id", db.GetPostID)
+	router.PUT("/post/:post_id", db.EditPost)
+	router.GET("/:category", db.GetCategoryPost)
+
+	// Comment route
 	router.GET("/comment/:post_id", db.GetCommentPost)
+
+	// Category route
+	router.GET("/category", db.GetCategory)
+
 	router.Run(":3333")
 }

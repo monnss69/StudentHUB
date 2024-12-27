@@ -18,7 +18,7 @@ const Home = () => {
       <div className="relative flex flex-col items-center justify-center p-4 mt-40">
         <div className="text-center">
           {/* Animated Text */}
-          <div className="flex flex-wrap justify-center gap-x-3 mb-8">
+          <div className="flex flex-wrap justify-center gap-x-2 mb-8">
             {letterArray.map((letter, index) => (
               <motion.span
                 key={index}

@@ -16,14 +16,14 @@ var DB *gorm.DB
 // Initialize initializes the database connection
 func Initialize() {
 	var err error
-	DB, err = gorm.Open(postgres.Open("host=localhost user=postgres password=<> dbname=postgres port=5432 sslmode=disable"), &gorm.Config{})
+	DB, err = gorm.Open(postgres.Open("host=localhost user=postgres password=! dbname=postgres port=5432 sslmode=disable"), &gorm.Config{})
 	if err != nil {
 		log.Fatal("Failed to connect to database:", err)
 	}
 	log.Println("Successfully connected to database!")
 }
 
-// handle user creation
+// Create user
 func CreateUser(c *gin.Context) {
 	var newUser interfaces.User
 
@@ -41,7 +41,7 @@ func CreateUser(c *gin.Context) {
 	c.JSON(200, newUser)
 }
 
-// search all users
+// Search all users
 func GetAllUser(c *gin.Context) {
 	var users []interfaces.User
 
@@ -54,6 +54,7 @@ func GetAllUser(c *gin.Context) {
 	c.JSON(http.StatusOK, users)
 }
 
+// Delete User
 func DeleteUser(c *gin.Context) {
 	id := c.Param("id")
 
@@ -65,12 +66,12 @@ func DeleteUser(c *gin.Context) {
 	c.JSON(http.StatusOK, "User Deleted")
 }
 
-// find users by their id
+// Find users by their id
 func GetUserID(c *gin.Context) {
 	id := c.Param("id")
 	var user interfaces.User
 
-	result := DB.Find(&user, "id = ?", id)
+	result := DB.First(&user, "id = ?", id)
 	if result.Error != nil {
 		c.JSON(http.StatusNotFound, gin.H{"error": "Error finding user"})
 		return
@@ -79,6 +80,7 @@ func GetUserID(c *gin.Context) {
 	c.JSON(http.StatusOK, user)
 }
 
+// Create post
 func CreatePost(c *gin.Context) {
 	var newPost interfaces.Post
 
@@ -89,7 +91,7 @@ func CreatePost(c *gin.Context) {
 	}
 
 	result := DB.Create(&newPost)
-	if result.RowsAffected != 0 {
+	if result.Error != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Error when creating post"})
 		return
 	}
@@ -97,7 +99,7 @@ func CreatePost(c *gin.Context) {
 	c.JSON(http.StatusOK, newPost)
 }
 
-// get posts based on category
+// Get posts based on category
 func GetCategoryPost(c *gin.Context) {
 	category := c.Param("category")
 
@@ -119,6 +121,7 @@ func GetCategoryPost(c *gin.Context) {
 	c.JSON(http.StatusOK, posts)
 }
 
+// Get post by ID
 func GetPostID(c *gin.Context) {
 	postID, err := uuid.Parse(c.Param("post_id"))
 	if err != nil {
@@ -137,6 +140,7 @@ func GetPostID(c *gin.Context) {
 	c.JSON(http.StatusOK, post)
 }
 
+// Delete post
 func DeletePost(c *gin.Context) {
 	postID, err := uuid.Parse(c.Param("post_id"))
 	if err != nil {
@@ -152,7 +156,7 @@ func DeletePost(c *gin.Context) {
 	c.JSON(http.StatusOK, "Post Deleted")
 }
 
-// get comment for specific post
+// Get comment for post
 func GetCommentPost(c *gin.Context) {
 	postID, err := uuid.Parse(c.Param("post_id"))
 	if err != nil {
@@ -169,4 +173,42 @@ func GetCommentPost(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, comment)
+}
+
+// Edit post
+func EditPost(c *gin.Context) {
+	postID, err := uuid.Parse(c.Param("post_id"))
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid edit request"})
+		return
+	}
+
+	var user interfaces.User
+
+	result := c.BindJSON(&user)
+	if result != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid post format"})
+		return
+	}
+
+	result0 := DB.Model(&interfaces.User{}).Where("id = ?", postID).Updates(&user)
+	if result0.Error != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Error when updating post"})
+		return
+	}
+
+	c.JSON(http.StatusOK, "Post updated")
+}
+
+// Get all category
+func GetCategory(c *gin.Context) {
+	var category []interfaces.Category
+
+	result := DB.Find(&category)
+	if result.Error != nil {
+		c.JSON(500, gin.H{"error": "Error finding category"})
+		return
+	}
+
+	c.JSON(http.StatusOK, category)
 }

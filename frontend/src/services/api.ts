@@ -1,17 +1,20 @@
 import axios from 'axios';
-
-interface User {
-    Username: string;
-    Email: string;
-    PasswordHash: string;
-}
+import { CreateUserInput, CreatePostInput } from './types';
 
 const API_URL = "http://localhost:3333";
 
 export const api = {
     getCategoryPosts: async (category: string) => {
         try {
-            const response = await axios.get(`${API_URL}/post/${category}`);
+            const response = await axios.get(`${API_URL}/${category}`);
+            return response.data;
+        } catch (error) {
+            throw error;
+        }
+    },
+    uploadPost: async (post: CreatePostInput) => {
+        try {
+            const response = await axios.post(`${API_URL}/post`, post);
             return response.data;
         } catch (error) {
             throw error;
@@ -25,9 +28,17 @@ export const api = {
             throw error;
         }
     },
-    createUser: async (user: User) => {
+    createUser: async (user: CreateUserInput) => {
         try {
             const response = await axios.post(`${API_URL}/users`, user);
+            return response.data;
+        } catch (error) {
+            throw error;
+        }
+    },
+    getCategory: async () => {
+        try {
+            const response = await axios.get(`${API_URL}/category`);
             return response.data;
         } catch (error) {
             throw error;
