@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { User, Lock, Mail, GraduationCap } from 'lucide-react';
+import { api } from '../services/api.ts';
 
 const Register = () => {
   const [formData, setFormData] = useState({
@@ -11,7 +12,14 @@ const Register = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log('Register attempted:', formData);
+    if (formData.password === formData.confirmPassword) {
+      api.createUser({
+        Username: formData.username,
+        Email: formData.email,
+        PasswordHash: formData.password
+    })} else {
+      window.alert("Passwords do not match");
+    }
   };
 
   const handleChange = (e) => {

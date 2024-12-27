@@ -6,6 +6,7 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	"github.com/google/uuid"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
@@ -15,7 +16,7 @@ var DB *gorm.DB
 // Initialize initializes the database connection
 func Initialize() {
 	var err error
-	DB, err = gorm.Open(postgres.Open("host=localhost user=postgres password= dbname=postgres port=5432 sslmode=disable"), &gorm.Config{})
+	DB, err = gorm.Open(postgres.Open("host=localhost user=postgres password=<> dbname=postgres port=5432 sslmode=disable"), &gorm.Config{})
 	if err != nil {
 		log.Fatal("Failed to connect to database:", err)
 	}
@@ -53,6 +54,17 @@ func GetAllUser(c *gin.Context) {
 	c.JSON(http.StatusOK, users)
 }
 
+func DeleteUser(c *gin.Context) {
+	id := c.Param("id")
+
+	result := DB.Delete(&interfaces.User{}, id)
+	if result.RowsAffected == 0 {
+		c.JSON(http.StatusBadRequest, "Invalid User ID")
+	}
+
+	c.JSON(http.StatusOK, "User Deleted")
+}
+
 // find users by their id
 func GetUserID(c *gin.Context) {
 	id := c.Param("id")
@@ -65,6 +77,24 @@ func GetUserID(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, user)
+}
+
+func CreatePost(c *gin.Context) {
+	var newPost interfaces.Post
+
+	err := c.BindJSON(&newPost)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid information"})
+		return
+	}
+
+	result := DB.Create(&newPost)
+	if result.RowsAffected != 0 {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Error when creating post"})
+		return
+	}
+
+	c.JSON(http.StatusOK, newPost)
 }
 
 // get posts based on category
@@ -89,12 +119,50 @@ func GetCategoryPost(c *gin.Context) {
 	c.JSON(http.StatusOK, posts)
 }
 
+func GetPostID(c *gin.Context) {
+	postID, err := uuid.Parse(c.Param("post_id"))
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid post ID format"})
+		return
+	}
+
+	var post interfaces.Post
+
+	result := DB.Model(&interfaces.Post{}).Where("id = ?", postID).First(&post)
+	if result.Error != nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": "Post not found"})
+		return
+	}
+
+	c.JSON(http.StatusOK, post)
+}
+
+func DeletePost(c *gin.Context) {
+	postID, err := uuid.Parse(c.Param("post_id"))
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid post ID format"})
+		return
+	}
+
+	result := DB.Delete(&interfaces.Post{}, postID)
+	if result.RowsAffected == 0 {
+		c.JSON(http.StatusBadRequest, "Invalid post ID")
+	}
+
+	c.JSON(http.StatusOK, "Post Deleted")
+}
+
+// get comment for specific post
 func GetCommentPost(c *gin.Context) {
-	postID := c.Param("post_id")
+	postID, err := uuid.Parse(c.Param("post_id"))
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid post ID format"})
+		return
+	}
 
 	var comment []interfaces.Comment
 
-	result := DB.Model(&interfaces.Comment{}).Where("PostID = ?", postID).Find(&comment)
+	result := DB.Model(&interfaces.Comment{}).Where("post_id = ?", postID).Find(&comment)
 	if result.Error != nil {
 		c.JSON(http.StatusNotFound, gin.H{"error": "Comment not found"})
 		return

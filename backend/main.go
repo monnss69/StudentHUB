@@ -22,9 +22,13 @@ func main() {
 	}))
 
 	// Route handling
-	router.POST("/create", db.CreateUser)
+	router.POST("/users", db.CreateUser)
+	router.DELETE("/users/:id", db.DeleteUser)
 	router.GET("/users", db.GetAllUser)
 	router.GET("/users/:id", db.GetUserID)
+	router.POST("/post", db.CreatePost)
+	router.DELETE("/post/:id", db.DeletePost)
+	router.GET("/post/:id", db.GetPostID)
 	router.GET("/post/:category", db.GetCategoryPost)
 	router.GET("/comment/:post_id", db.GetCommentPost)
 	router.Run(":3333")
