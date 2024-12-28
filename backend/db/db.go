@@ -5,6 +5,8 @@ import (
 	"log"
 	"net/http"
 
+	"golang.org/x/crypto/bcrypt"
+
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
 	"gorm.io/driver/postgres"
@@ -32,11 +34,21 @@ func CreateUser(c *gin.Context) {
 		return
 	}
 
+	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(newUser.PasswordHash), bcrypt.DefaultCost)
+	if err != nil {
+		c.JSON(500, gin.H{"error": "Error hashing password"})
+		return
+	}
+
+	newUser.PasswordHash = string(hashedPassword)
+
 	result := DB.Create(&newUser)
 	if result.Error != nil {
 		c.JSON(500, gin.H{"error": "Error creating user"})
 		return
 	}
+
+	newUser.PasswordHash = ''
 
 	c.JSON(200, newUser)
 }
