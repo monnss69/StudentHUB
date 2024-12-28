@@ -1,11 +1,11 @@
 export interface CreatePostInput {
-    Title: string;
-    Content: string;
-    CategoryID: string;
+    title: string;
+    content: string;
+    categoryID: string;
 }
 
 export interface CreateUserInput {
-    Username: string;
-    Email: string;
-    PasswordHash: string;
+    username: string;
+    email: string;
+    passwordHash: string;
 }

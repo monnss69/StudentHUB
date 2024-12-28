@@ -9,6 +9,8 @@ import (
 	"github.com/google/uuid"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
+
+	"golang.org/x/crypto/bcrypt"
 )
 
 var DB *gorm.DB
@@ -16,7 +18,7 @@ var DB *gorm.DB
 // Initialize initializes the database connection
 func Initialize() {
 	var err error
-	DB, err = gorm.Open(postgres.Open("host=localhost user=postgres password=! dbname=postgres port=5432 sslmode=disable"), &gorm.Config{})
+	DB, err = gorm.Open(postgres.Open("host=localhost user=postgres password=Monnss234! dbname=postgres port=5432 sslmode=disable"), &gorm.Config{})
 	if err != nil {
 		log.Fatal("Failed to connect to database:", err)
 	}
@@ -32,11 +34,21 @@ func CreateUser(c *gin.Context) {
 		return
 	}
 
+	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(newUser.PasswordHash), bcrypt.DefaultCost)
+	if err != nil {
+		c.JSON(500, gin.H{"error": "Error hashing password"})
+		return
+	}
+
+	newUser.PasswordHash = string(hashedPassword)
+
 	result := DB.Create(&newUser)
 	if result.Error != nil {
 		c.JSON(500, gin.H{"error": "Error creating user"})
 		return
 	}
+
+	newUser.PasswordHash = "" // Clear password in response
 
 	c.JSON(200, newUser)
 }

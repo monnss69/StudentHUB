@@ -7,14 +7,13 @@ import (
 )
 
 type User struct {
-	ID           uuid.UUID `gorm:"type:uuid;primary_key;default:gen_random_uuid()"`
-	Username     string    `gorm:"type:varchar(50);unique;not null"`
-	Email        string    `gorm:"type:varchar(255);unique;not null"`
-	PasswordHash string    `gorm:"column:password_hash;type:varchar(255);not null"`
-	CreatedAt    time.Time `gorm:"type:timestamp with time zone;default:current_timestamp"`
-	UpdatedAt    time.Time `gorm:"type:timestamp with time zone;default:current_timestamp"`
+	ID           uuid.UUID `json:"id" gorm:"type:uuid;primary_key;default:gen_random_uuid()"`
+	Username     string    `json:"username" gorm:"type:varchar(50);unique;not null"`
+	Email        string    `json:"email" gorm:"type:varchar(255);unique;not null"`
+	PasswordHash string    `json:"password_hash" gorm:"column:password_hash;type:varchar(255);not null"`
+	CreatedAt    time.Time `json:"created_at" gorm:"type:timestamp with time zone;default:current_timestamp"`
+	UpdatedAt    time.Time `json:"updated_at" gorm:"type:timestamp with time zone;default:current_timestamp"`
 }
-
 type Category struct {
 	ID          uuid.UUID `gorm:"type:uuid;primary_key;default:gen_random_uuid()"`
 	Name        string    `gorm:"type:varchar(100);unique;not null"`

@@ -1,23 +1,30 @@
-import React, { useState } from 'react';
-import { User, Lock, Mail, GraduationCap } from 'lucide-react';
-import { api } from '../services/api.ts';
+import React, { useState } from "react";
+import { User, Lock, Mail, GraduationCap } from "lucide-react";
+import { api } from "../services/api.ts";
 
 const Register = () => {
   const [formData, setFormData] = useState({
-    username: '',
-    email: '',
-    password: '',
-    confirmPassword: ''
+    username: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
   });
 
   const handleSubmit = (e) => {
     e.preventDefault();
     if (formData.password === formData.confirmPassword) {
-      api.createUser({
-        Username: formData.username,
-        Email: formData.email,
-        PasswordHash: formData.password
-    })} else {
+      api
+        .createUser({
+          Username: formData.username,
+          Email: formData.email,
+          PasswordHash: formData.password,
+        })
+        .then(() => window.alert("Account created successfully"))
+        .catch((err) => window.alert(err.message));
+
+      // Redirect to login page
+      Navigate("/login");
+    } else {
       window.alert("Passwords do not match");
     }
   };
@@ -25,7 +32,7 @@ const Register = () => {
   const handleChange = (e) => {
     setFormData({
       ...formData,
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     });
   };
 
@@ -44,7 +51,9 @@ const Register = () => {
           <div className="flex justify-center mb-4">
             <GraduationCap className="h-12 w-12 text-teal-600" />
           </div>
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">Welcome to StudentHub</h1>
+          <h1 className="text-3xl font-bold text-gray-900 mb-2">
+            Welcome to StudentHub
+          </h1>
           <p className="text-gray-600">Begin your academic journey with us</p>
         </div>
 
