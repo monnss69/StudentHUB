@@ -1,16 +1,28 @@
 import React, { useState } from 'react';
 import { User, Lock, GraduationCap } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { api } from '../services/api';
 
-const Login = () => {
+const Login = ({ setLogin }) => {
   const [formData, setFormData] = useState({
     username: '',
     password: ''
   });
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('Login attempted:', formData);
+    
+    try {
+      const result = await api.userLogIn(formData);
+      if (result.authenticated === true) { 
+        setLogin(true);
+      } else {
+        window.alert('Invalid credentials');
+      }
+    } catch (err) {
+      console.error('Failed to login:', err);
+      window.alert('Failed to login. Please try again.');
+    }
   };
 
   const handleChange = (e) => {

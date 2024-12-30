@@ -28,6 +28,7 @@ func main() {
 	router.DELETE("/users/:id", db.DeleteUser)
 	router.GET("/users", db.GetAllUser)
 	router.GET("/users/:id", db.GetUserID)
+	router.POST("/login", db.AuthenticateUser)
 
 	// Post route
 	router.POST("/post", db.CreatePost)
