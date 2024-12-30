@@ -48,7 +48,7 @@ func CreateUser(c *gin.Context) {
 		return
 	}
 
-	newUser.PasswordHash = "" // Clear password in response
+	newUser.PasswordHash = ""
 
 	c.JSON(200, newUser)
 }
