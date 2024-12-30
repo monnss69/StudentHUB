@@ -55,9 +55,8 @@ func AuthenticateUser(c *gin.Context) {
 		}
 
 		c.SetCookie("token", tokenString, 3600, "/", "localhost:3333", false, true)
+		c.JSON(http.StatusOK, gin.H{"token": tokenString})
 	}
-
-	c.JSON(http.StatusOK, true)
 }
 
 // Create user

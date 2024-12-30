@@ -1,37 +1,47 @@
 import axios from "axios";
-import { createContext, useContext, useEffect, useMemo, useState } from "react";
+import { createContext, useContext, useState } from "react";
 
 const AuthContext = createContext();
 
+const getCookie = (name) => {
+  const cookieValue = document.cookie
+    .split("; ")
+    .find((row) => row.startsWith(`${name}=`))
+    ?.split("=")[1];
+  return cookieValue ? decodeURIComponent(cookieValue) : null;
+};
+
+const setCookie = (name, value, days = 1) => {
+  const date = new Date();
+  date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+  const expires = `expires=${date.toUTCString()}`;
+  document.cookie = `${name}=${encodeURIComponent(value)};${expires};path=/;SameSite=Strict`;
+};
+
 export const AuthProvider = ({ children }) => {
-  // State to hold the authentication token
-  const [token, setToken_] = useState(localStorage.getItem("token"));
+  // State to hold the authentication token - only used for UI purposes
+  const [token, setToken_] = useState(getCookie("token"));
 
   // Function to set the authentication token
   const setToken = (newToken) => {
+    if (newToken) {
+      setCookie("token", newToken);
+    } else {
+      // Remove cookie when logging out
+      document.cookie = "token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+    }
     setToken_(newToken);
   };
 
-  useEffect(() => {
-    if (token) {
-      axios.defaults.headers.common["Authorization"] = "Bearer " + token;
-      localStorage.setItem('token',token);
-    } else {
-      delete axios.defaults.headers.common["Authorization"];
-      localStorage.removeItem('token')
-    }
-  }, [token]);
+  // Configure axios to include credentials in requests
+  axios.defaults.withCredentials = true;
 
   // Memoized value of the authentication context
-  const contextValue = useMemo(
-    () => ({
-      token,
-      setToken,
-    }),
-    [token]
-  );
+  const contextValue = {
+    token,
+    setToken,
+  };
 
-  // Provide the authentication context to the children components
   return (
     <AuthContext.Provider value={contextValue}>{children}</AuthContext.Provider>
   );

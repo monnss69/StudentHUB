@@ -1,27 +1,48 @@
-import React, { useState, useNavigate } from 'react';
+import React, { useState } from 'react';
 import { User, Lock, GraduationCap } from 'lucide-react';
-import { Link } from 'react-router-dom';
-import { api } from '../services/api.ts';
-import { useAuth } from '../provider/authProvider.ts';
+import { Link, useNavigate } from 'react-router-dom';
+import { api } from '../services/api';
+import { useAuth } from '../provider/authProvider';
 
 const Login = () => {
+  // State for form data and error handling
   const [formData, setFormData] = useState({
     username: '',
-    password: ''
+    passwordHash: ''  // Changed from password to match your backend
   });
+  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
 
-  const { setToken } = useAuth()
-  const navigate = useNavigate()
+  // Hooks for navigation and authentication
+  const navigate = useNavigate();
+  const { setToken } = useAuth();
 
-  const handleSubmit = (e) => {
+  // Handle form submission
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    setError('');
+    setLoading(true);
+
     try {
-      api.userLogin(formData)
+      // Call the login API
+      const response = await api.userLogin({
+        username: formData.username,
+        password: formData.passwordHash
+      });
+
+      // The JWT token is automatically set as a cookie by your backend
+      if (response) {
+        setToken(response.token);
+        navigate('/');
+      }
     } catch (err) {
-      window.alert(err.message);
+      setError(err.response?.data?.error || 'Failed to login. Please try again.');
+    } finally {
+      setLoading(false);
     }
   };
 
+  // Handle input changes
   const handleChange = (e) => {
     setFormData({
       ...formData,
@@ -31,14 +52,14 @@ const Login = () => {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-teal-50 via-blue-50 to-cyan-50">
-      {/* Decorative Background Elements */}
+      {/* Background decorative elements */}
       <div className="absolute inset-0 overflow-hidden">
         <div className="absolute top-0 left-0 w-96 h-96 bg-teal-100 rounded-full mix-blend-multiply filter blur-xl opacity-50 animate-pulse"></div>
         <div className="absolute bottom-0 right-0 w-96 h-96 bg-blue-100 rounded-full mix-blend-multiply filter blur-xl opacity-50"></div>
       </div>
 
       {/* Main Container */}
-      <div className="relative max-w-md w-full mx-4 p-8 bg-white/80 backdrop-blur-sm rounded-xl shadow-lg -mt-8">
+      <div className="relative max-w-md w-full mx-4 p-8 bg-white/80 backdrop-blur-sm rounded-xl shadow-lg">
         {/* Header Section */}
         <div className="text-center mb-8">
           <div className="flex justify-center mb-4">
@@ -48,10 +69,17 @@ const Login = () => {
           <p className="text-gray-600">Continue your learning journey</p>
         </div>
 
+        {/* Error Message */}
+        {error && (
+          <div className="mb-4 p-3 bg-red-100 border border-red-400 text-red-700 rounded">
+            {error}
+          </div>
+        )}
+
         {/* Form Section */}
         <form onSubmit={handleSubmit} className="space-y-6">
           {/* Username Input */}
-          <div className="relative group">
+          <div className="relative">
             <div className="absolute inset-y-0 left-0 pl-3 flex items-center">
               <User className="h-5 w-5 text-teal-500" />
             </div>
@@ -63,39 +91,42 @@ const Login = () => {
               required
               placeholder="Username"
               className="w-full pl-10 pr-4 py-2 border border-gray-200 rounded-lg bg-white/50 focus:ring-2 focus:ring-teal-500 focus:border-transparent transition-all"
+              disabled={loading}
             />
           </div>
 
           {/* Password Input */}
-          <div className="relative group">
+          <div className="relative">
             <div className="absolute inset-y-0 left-0 pl-3 flex items-center">
               <Lock className="h-5 w-5 text-teal-500" />
             </div>
             <input
               type="password"
-              name="password"
-              value={formData.password}
+              name="passwordHash"
+              value={formData.passwordHash}
               onChange={handleChange}
               required
               placeholder="Password"
               className="w-full pl-10 pr-4 py-2 border border-gray-200 rounded-lg bg-white/50 focus:ring-2 focus:ring-teal-500 focus:border-transparent transition-all"
+              disabled={loading}
             />
           </div>
 
           {/* Submit Button */}
           <button
             type="submit"
-            className="w-full py-2 px-4 bg-teal-600 hover:bg-teal-700 text-white font-medium rounded-lg shadow-md hover:shadow-lg transform hover:-translate-y-0.5 transition-all duration-200"
+            disabled={loading}
+            className="w-full py-2 px-4 bg-teal-600 hover:bg-teal-700 text-white font-medium rounded-lg shadow-md hover:shadow-lg transform hover:-translate-y-0.5 transition-all duration-200 disabled:bg-teal-400 disabled:cursor-not-allowed"
           >
-            Sign in
+            {loading ? 'Signing in...' : 'Sign in'}
           </button>
         </form>
 
         {/* Additional Links */}
         <div className="mt-6 text-center text-sm">
-          <a href="#" className="text-teal-600 hover:text-teal-700 transition-colors">
-            <Link to="/register">New to StudentHub? Create an account</Link>
-          </a>
+          <Link to="/register" className="text-teal-600 hover:text-teal-700 transition-colors">
+            New to StudentHub? Create an account
+          </Link>
         </div>
       </div>
     </div>
