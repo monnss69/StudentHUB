@@ -20,7 +20,7 @@ const PlatformSupport = () => {
 
         // Create a map of AuthorID to author data for easier lookup
         const authorsMap = authors.reduce((map, author) => {
-          map[author.ID] = author;
+          map[author.id] = author;
           return map;
         }, {});
 

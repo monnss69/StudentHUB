@@ -19,9 +19,8 @@ const AcademicHub = () => {
           posts.map(post => api.getUsersID(post.AuthorID))
         );
 
-        // Create a map of AuthorID to author data for easier lookup
         const authorsMap = authors.reduce((map, author) => {
-          map[author.ID] = author;
+          map[author.id] = author;
           return map;
         }, {});
 
@@ -42,6 +41,7 @@ const AcademicHub = () => {
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error}</div>;
   if (!academicPosts?.length) return <div>No posts found</div>;
+  console.log(postAuthors);
 
   return (
     <div className="p-6">
