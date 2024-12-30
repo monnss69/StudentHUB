@@ -9,8 +9,3 @@ export interface CreateUserInput {
     email: string;
     passwordHash: string;
 }
-
-export interface LogInInput {
-    email: string;
-    passwordHash: string;
-}

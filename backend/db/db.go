@@ -25,32 +25,6 @@ func Initialize() {
 	log.Println("Successfully connected to database!")
 }
 
-func AuthenticateUser(c *gin.Context) {
-	var authUser interfaces.AuthenticateUser
-
-	if err := c.BindJSON(&authUser); err != nil {
-		c.JSON(400, gin.H{"error": "Error binding JSON"})
-		return
-	}
-
-	// First find the user by username
-	var user interfaces.User
-	result := DB.Where("username = ?", authUser.Username).First(&user)
-	if result.Error != nil {
-		c.JSON(http.StatusUnauthorized, gin.H{"error": "Wrong username/password"})
-		return
-	}
-
-	// Compare the provided password with stored hash
-	err := bcrypt.CompareHashAndPassword([]byte(user.PasswordHash), []byte(authUser.PasswordHash))
-	if err != nil {
-		c.JSON(http.StatusUnauthorized, gin.H{"error": "Wrong username/password"})
-		return
-	}
-
-	c.JSON(http.StatusOK, gin.H{"authenticated": true})
-}
-
 // Create user
 func CreateUser(c *gin.Context) {
 	var newUser interfaces.User

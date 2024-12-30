@@ -15,7 +15,7 @@ function App() {
   return (
     login ? (
       <Router>
-        <Layout login={login}>
+        <Layout>
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/login" element={<Login setLogin={setLogin} />} />
@@ -29,7 +29,7 @@ function App() {
       </Router>
     ) : (
       <Router>
-        <Layout login={login}>
+        <Layout>
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/login" element={<Login setLogin={setLogin} />} />

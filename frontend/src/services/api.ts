@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { CreateUserInput, CreatePostInput, LogInInput } from './types';
+import { CreateUserInput, CreatePostInput } from './types';
 
 const API_URL = "http://localhost:3333";
 
@@ -43,13 +43,5 @@ export const api = {
         } catch (error) {
             throw error;
         }
-    },
-    userLogIn: async (user: LogInInput) => {
-        try {
-            const response = await axios.post(`${API_URL}/login`, user);
-            return response.data;
-        } catch (error) {
-            throw error;
-        }
-    },
+    }
 }
