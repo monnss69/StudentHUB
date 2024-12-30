@@ -1,6 +1,7 @@
 package main
 
 import (
+	"backend/auth"
 	"backend/db"
 
 	"github.com/gin-contrib/cors"
@@ -23,17 +24,20 @@ func main() {
 
 	// Route handling
 
+	// Authentication
+	router.POST("/auth", db.AuthenticateUser)
+
 	// Users Route
 	router.POST("/users", db.CreateUser)
-	router.DELETE("/users/:id", db.DeleteUser)
+	router.DELETE("/users/:id", auth.AuthMiddleware(), db.DeleteUser)
 	router.GET("/users", db.GetAllUser)
 	router.GET("/users/:id", db.GetUserID)
 
 	// Post route
-	router.POST("/post", db.CreatePost)
-	router.DELETE("/post/:post_id", db.DeletePost)
+	router.POST("/post", auth.AuthMiddleware(), db.CreatePost)
+	router.DELETE("/post/:post_id", auth.AuthMiddleware(), db.DeletePost)
 	router.GET("/post/:post_id", db.GetPostID)
-	router.PUT("/post/:post_id", db.EditPost)
+	router.PUT("/post/:post_id", auth.AuthMiddleware(), db.EditPost)
 	router.GET("/:category", db.GetCategoryPost)
 
 	// Comment route

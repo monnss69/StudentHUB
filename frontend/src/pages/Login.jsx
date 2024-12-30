@@ -1,6 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useNavigate } from 'react';
 import { User, Lock, GraduationCap } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { api } from '../services/api.ts';
+import { useAuth } from '../provider/authProvider.ts';
 
 const Login = () => {
   const [formData, setFormData] = useState({
@@ -8,9 +10,16 @@ const Login = () => {
     password: ''
   });
 
+  const { setToken } = useAuth()
+  const navigate = useNavigate()
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log('Login attempted:', formData);
+    try {
+      api.userLogin(formData)
+    } catch (err) {
+      window.alert(err.message);
+    }
   };
 
   const handleChange = (e) => {

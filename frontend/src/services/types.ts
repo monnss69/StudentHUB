@@ -9,3 +9,8 @@ export interface CreateUserInput {
     email: string;
     passwordHash: string;
 }
+
+export interface LogIn {
+    username: string;
+    password: string;
+}
