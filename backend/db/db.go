@@ -5,12 +5,12 @@ import (
 	"log"
 	"net/http"
 
+	"golang.org/x/crypto/bcrypt"
+
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
-
-	"golang.org/x/crypto/bcrypt"
 )
 
 var DB *gorm.DB
