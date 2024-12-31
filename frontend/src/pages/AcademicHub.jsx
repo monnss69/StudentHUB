@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { api } from '../services/api.ts';
+import { apiService } from '../services/api.ts';
 import Post from '../components/Post.jsx';
 import UploadButton from '../components/UploadButton.jsx';
 
@@ -13,15 +13,14 @@ const AcademicHub = () => {
     const fetchPosts = async () => {
       try {
         // Get all posts from the Academic Hub category
-        const posts = await api.getCategoryPosts("Academic Hub");
+        const posts = await apiService.getCategoryPosts("Academic Hub");
 
         const authors = await Promise.all(
-          posts.map(post => api.getUsersID(post.AuthorID))
+          posts.map(post => apiService.getUsersID(post.AuthorID))
         );
 
-        // Create a map of AuthorID to author data for easier lookup
         const authorsMap = authors.reduce((map, author) => {
-          map[author.ID] = author;
+          map[author.id] = author;
           return map;
         }, {});
 
@@ -42,6 +41,7 @@ const AcademicHub = () => {
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error}</div>;
   if (!academicPosts?.length) return <div>No posts found</div>;
+  console.log(postAuthors);
 
   return (
     <div className="p-6">

@@ -1,6 +1,7 @@
 package db
 
 import (
+	"backend/auth"
 	"backend/interfaces"
 	"log"
 	"net/http"
@@ -18,11 +19,53 @@ var DB *gorm.DB
 // Initialize initializes the database connection
 func Initialize() {
 	var err error
-	DB, err = gorm.Open(postgres.Open("host=localhost user=postgres password=! dbname=postgres port=5432 sslmode=disable"), &gorm.Config{})
+	DB, err = gorm.Open(postgres.Open("host=localhost user=postgres password=<> dbname=postgres port=5432 sslmode=disable"), &gorm.Config{})
 	if err != nil {
 		log.Fatal("Failed to connect to database:", err)
 	}
 	log.Println("Successfully connected to database!")
+}
+
+func LogOutUser(c *gin.Context) {
+	c.SetCookie("token", "", -1, "/", "localhost", false, true)
+	c.SetCookie("token", "", -1, "/", "localhost", false, false)
+
+	c.JSON(http.StatusOK, gin.H{
+		"message": "Successfully logged out",
+	})
+}
+
+func AuthenticateUser(c *gin.Context) {
+	var authUser interfaces.AuthenticateUser
+
+	if err := c.BindJSON(&authUser); err != nil {
+		c.JSON(400, gin.H{"error": "Error binding JSON"})
+		return
+	}
+
+	// First find the user by username
+	var user interfaces.User
+	result := DB.Where("username = ?", authUser.Username).First(&user)
+	if result.Error != nil {
+		c.JSON(http.StatusUnauthorized, gin.H{"error": "Wrong username/password"})
+		return
+	}
+
+	// Compare the provided password with stored hash
+	err := bcrypt.CompareHashAndPassword([]byte(user.PasswordHash), []byte(authUser.PasswordHash))
+	if err != nil {
+		c.JSON(http.StatusUnauthorized, gin.H{"error": "Wrong username/password"})
+		return
+	} else {
+		tokenString, err := auth.CreateToken(user.Username)
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": "Error creating JWT token"})
+			return
+		}
+
+		c.SetCookie("token", tokenString, 3600, "/", "localhost", false, true)
+		c.JSON(http.StatusOK, gin.H{"token": tokenString})
+	}
 }
 
 // Create user

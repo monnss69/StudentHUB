@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { api } from '../services/api.ts';
+import { apiService } from '../services/api.ts';
 import Post from '../components/Post.jsx';
 
 const CampusCommunity = () => {
@@ -12,15 +12,15 @@ const CampusCommunity = () => {
     const fetchPosts = async () => {
       try {
         // Get all posts from the Academic Hub category
-        const posts = await api.getCategoryPosts("Campus Community");
+        const posts = await apiService.getCategoryPosts("Campus Community");
 
         const authors = await Promise.all(
-          posts.map(post => api.getUsersID(post.AuthorID))
+          posts.map(post => apiService.getUsersID(post.AuthorID))
         );
 
         // Create a map of AuthorID to author data for easier lookup
         const authorsMap = authors.reduce((map, author) => {
-          map[author.ID] = author;
+          map[author.id] = author;
           return map;
         }, {});
 
@@ -54,6 +54,8 @@ const CampusCommunity = () => {
           />
         ))}
       </div>
+
+      <UploadButton />
     </div>
   );
 };

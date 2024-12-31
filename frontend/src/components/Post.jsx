@@ -10,7 +10,7 @@ const Post = ({ post, author }) => {
           <div>
             <h2 className="font-semibold text-lg text-gray-800">{post.Title}</h2>
             <p className="text-sm text-gray-600">
-              Posted by {author.Username} • {new Date(post.CreatedAt).toLocaleDateString()}
+              Posted by {author.username} • {new Date(post.CreatedAt).toLocaleDateString()}
             </p>
           </div>
         </div>
