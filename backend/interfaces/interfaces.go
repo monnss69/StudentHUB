@@ -14,6 +14,12 @@ type User struct {
 	CreatedAt    time.Time `json:"created_at" gorm:"type:timestamp with time zone;default:current_timestamp"`
 	UpdatedAt    time.Time `json:"updated_at" gorm:"type:timestamp with time zone;default:current_timestamp"`
 }
+
+type AuthenticateUser struct {
+	Username     string `json:"username" gorm:"type:varchar(50);not null"`
+	PasswordHash string `json:"password" gorm:"column:password_hash;type:varchar(255);not null"`
+}
+
 type Category struct {
 	ID          uuid.UUID `gorm:"type:uuid;primary_key;default:gen_random_uuid()"`
 	Name        string    `gorm:"type:varchar(100);unique;not null"`
