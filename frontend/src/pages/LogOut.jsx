@@ -8,26 +8,17 @@ const Logout = () => {
   const navigate = useNavigate();
   const { setToken } = useAuth();
 
-  const handleLogout = async () => {
-    try {
-        // Call backend logout first
-        await apiService.logout();
-        
-        // Clear the authentication token
-        setToken(null);
-        
-        // Clear any cached axios configs
-        delete axios.defaults.headers.common['Authorization'];
-        
-        // Clear localStorage if you're using it
-        localStorage.clear();
-        
-        // Navigate to home
-        navigate('/', { replace: true });
-    } catch (error) {
-        console.error('Logout error:', error);
-    }
-};
+  const handleLogout = () => {
+    // Clear the authentication token
+    setToken(null);
+
+    // Clear any other user-related data from localStorage if you have any
+    localStorage.clear();
+    apiService.logout();
+
+    // Navigate to the home page
+    navigate('/', { replace: true });
+  };
 
   return (
     <button

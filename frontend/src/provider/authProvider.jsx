@@ -24,12 +24,8 @@ export const AuthProvider = ({ children }) => {
   // Function to set the authentication token
   const setToken = (newToken) => {
     setToken_(newToken);
-    if (!newToken) {
-        // Clear the axios default config when token is removed
-        axios.defaults.withCredentials = true;
-        delete axios.defaults.headers.common['Authorization'];
-    }
-};
+    // Let the backend handle cookie setting
+  };
 
   // Configure axios
   useEffect(() => {
