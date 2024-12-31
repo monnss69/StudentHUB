@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { apiService } from '../services/api.ts';
 import Post from '../components/Post.jsx';
+import UploadButton from '../components/UploadButton.jsx';
 
 const CampusCommunity = () => {
   const [campusPosts, setCampusPosts] = useState([]);
