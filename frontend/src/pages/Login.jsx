@@ -102,8 +102,8 @@ const Login = () => {
             </div>
             <input
               type="password"
-              name="passwordHash"
-              value={formData.passwordHash}
+              name="password"
+              value={formData.password}
               onChange={handleChange}
               required
               placeholder="Password"

@@ -27,7 +27,9 @@ func Initialize() {
 }
 
 func LogOutUser(c *gin.Context) {
+	// Clear the token cookie more thoroughly
 	c.SetCookie("token", "", -1, "/", "localhost", false, true)
+	c.SetCookie("token", "", -1, "/", "localhost", false, false)
 
 	c.JSON(http.StatusOK, gin.H{
 		"message": "Successfully logged out",
@@ -50,10 +52,7 @@ func AuthenticateUser(c *gin.Context) {
 		return
 	}
 
-	currPassword, _ := bcrypt.GenerateFromPassword([]byte(authUser.Password), bcrypt.DefaultCost)
-
-	// Compare the provided password with stored hash
-	err := bcrypt.CompareHashAndPassword([]byte(user.PasswordHash), []byte(currPassword))
+	err := bcrypt.CompareHashAndPassword([]byte(user.PasswordHash), []byte(authUser.Password))
 	if err != nil {
 		c.JSON(http.StatusUnauthorized, gin.H{"error": "Wrong password"})
 		return
