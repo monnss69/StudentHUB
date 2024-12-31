@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { api } from '../services/api';
+import { apiService } from '../services/api';
 
 const CreatePost = () => {
   const navigate = useNavigate();
@@ -17,7 +17,7 @@ const CreatePost = () => {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const response = await api.getCategory();
+        const response = await apiService.getCategory();
         setCategories(response);
       } catch (err) {
         console.error('Failed to fetch categories:', err);
@@ -42,7 +42,7 @@ const CreatePost = () => {
     setError(null);
 
     try {
-      await api.uploadPost(formData);
+      await apiService.uploadPost(formData);
       navigate('/academic-hub');
     } catch (err) {
       console.error('Failed to create post:', err);

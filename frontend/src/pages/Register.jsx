@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { User, Lock, Mail, GraduationCap } from "lucide-react";
-import { api } from "../services/api.ts";
+import { apiService } from "../services/api.ts";
 
 const Register = () => {
   const [formData, setFormData] = useState({
@@ -13,7 +13,7 @@ const Register = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (formData.password === formData.confirmPassword) {
-      api
+      apiService
         .createUser({
           Username: formData.username,
           Email: formData.email,

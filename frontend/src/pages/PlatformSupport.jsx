@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { api } from '../services/api.ts';
+import { apiService } from '../services/api.ts';
 import Post from '../components/Post.jsx';
 
 const PlatformSupport = () => {
@@ -12,10 +12,10 @@ const PlatformSupport = () => {
     const fetchPosts = async () => {
       try {
         // Get all posts from the Academic Hub category
-        const posts = await api.getCategoryPosts("Platform Support");
+        const posts = await apiService.getCategoryPosts("Platform Support");
 
         const authors = await Promise.all(
-          posts.map(post => api.getUsersID(post.AuthorID))
+          posts.map(post => apiService.getUsersID(post.AuthorID))
         );
 
         // Create a map of AuthorID to author data for easier lookup

@@ -11,79 +11,64 @@ import PlatformSupport from '../pages/PlatformSupport';
 import CreatePost from '../pages/CreatePost';
 
 const Routes = () => {
-  const { token } = useAuth();
+  const { isAuthenticated } = useAuth();
 
-  // Define public routes accessible to all users
-  const routesForPublic = [
+  // Let's organize our routes more clearly
+  const publicRoutes = [
     {
       path: "/",
-      element: <Layout />,
-      children: [
-        {
-            path: "/",
-            element: <Home />,
-        },
-        {
-          path: "/login",
-          element: <Login />,
-        },
-        {
-          path: "/register",
-          element: <Register />,
-        }
-      ]
+      element: <Home />
     }
   ];
 
-  // Define routes accessible only to authenticated users
-  const routesForAuthenticatedOnly = [
+  const authRoutes = [
     {
-      path: "/",
-      element: <ProtectedRoute><Layout /></ProtectedRoute>,
-      children: [
-        {
-          path: "/",
-          element: <Home />,
-        },
-        {
-          path: "/post/academic-hub",
-          element: <AcademicHub />,
-        },
-        {
-          path: "/post/campus-community",
-          element: <CampusCommunity />,
-        },
-        {
-          path: "/post/platform-support",
-          element: <PlatformSupport />,
-        },
-        {
-          path: "/create-post",
-          element: <CreatePost />,
-        }
-      ],
+      path: "/login",
+      element: <Login />
     },
+    {
+      path: "/register",
+      element: <Register />
+    }
   ];
 
-  // Define routes accessible only to non-authenticated users
-  const routesForNotAuthenticatedOnly = [
+  const protectedRoutes = [
+    {
+      path: "/post/academic-hub",
+      element: <AcademicHub />
+    },
+    {
+      path: "/post/campus-community",
+      element: <CampusCommunity />
+    },
+    {
+      path: "/post/platform-support",
+      element: <PlatformSupport />
+    },
+    {
+      path: "/create-post",
+      element: <CreatePost />
+    }
+  ];
+
+  const router = createBrowserRouter([
     {
       path: "/",
       element: <Layout />,
       children: [
+        // Public routes are always available
+        ...publicRoutes,
+        
+        // Auth routes only available when not logged in
+        ...(!isAuthenticated ? authRoutes : []),
+        
+        // Protected routes wrapped in ProtectedRoute component
         {
-          path: "/",
-          element: <Home />,
+          element: <ProtectedRoute />,
+          children: protectedRoutes
         }
       ]
     }
-  ];
-
-  // Combine and conditionally include routes based on authentication status
-  const router = createBrowserRouter([
-    ...routesForPublic,
-    ...(!token ? routesForNotAuthenticatedOnly : []),
-    ...routesForAuthenticatedOnly,
   ]);
 
   return <RouterProvider router={router} />;

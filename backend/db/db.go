@@ -26,6 +26,14 @@ func Initialize() {
 	log.Println("Successfully connected to database!")
 }
 
+func LogOutUser(c *gin.Context) {
+	c.SetCookie("token", "", -1, "/", "localhost", false, true)
+
+	c.JSON(http.StatusOK, gin.H{
+		"message": "Successfully logged out",
+	})
+}
+
 func AuthenticateUser(c *gin.Context) {
 	var authUser interfaces.AuthenticateUser
 
@@ -54,7 +62,7 @@ func AuthenticateUser(c *gin.Context) {
 			return
 		}
 
-		c.SetCookie("token", tokenString, 3600, "/", "localhost:3333", false, true)
+		c.SetCookie("token", tokenString, 3600, "/", "localhost", false, true)
 		c.JSON(http.StatusOK, gin.H{"token": tokenString})
 	}
 }

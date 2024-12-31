@@ -26,6 +26,7 @@ func main() {
 
 	// Authentication
 	router.POST("/auth", db.AuthenticateUser)
+	router.POST("/auth/logout", db.LogOutUser)
 
 	// Users Route
 	router.POST("/users", db.CreateUser)
@@ -36,12 +37,12 @@ func main() {
 	// Post route
 	router.POST("/post", auth.AuthMiddleware(), db.CreatePost)
 	router.DELETE("/post/:post_id", auth.AuthMiddleware(), db.DeletePost)
-	router.GET("/post/:post_id", db.GetPostID)
+	router.GET("/post/:post_id", auth.AuthMiddleware(), db.GetPostID)
 	router.PUT("/post/:post_id", auth.AuthMiddleware(), db.EditPost)
-	router.GET("/:category", db.GetCategoryPost)
+	router.GET("/:category", auth.AuthMiddleware(), db.GetCategoryPost)
 
 	// Comment route
-	router.GET("/comment/:post_id", db.GetCommentPost)
+	router.GET("/comment/:post_id", auth.AuthMiddleware(), db.GetCommentPost)
 
 	// Category route
 	router.GET("/category", db.GetCategory)

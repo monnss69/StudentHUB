@@ -14,7 +14,7 @@ var secretKey = []byte("my-app-key")
 func CreateToken(username string) (string, error) {
 	claims := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
 		"sub": username,
-		"exp": time.Now().Add(time.Hour * 24).Unix(),
+		"exp": time.Now().Add(time.Hour).Unix(),
 		"iss": time.Now().Unix(),
 	})
 

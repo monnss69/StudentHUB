@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { User, Lock, GraduationCap } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
-import { api } from '../services/api';
+import { apiService } from '../services/api';
 import { useAuth } from '../provider/authProvider';
 
 const Login = () => {
@@ -25,7 +25,7 @@ const Login = () => {
 
     try {
       // Call the login API
-      const response = await api.userLogin({
+      const response = await apiService.userLogin({
         username: formData.username,
         password: formData.passwordHash
       });
