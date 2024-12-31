@@ -15,9 +15,9 @@ const Register = () => {
     if (formData.password === formData.confirmPassword) {
       apiService
         .createUser({
-          Username: formData.username,
-          Email: formData.email,
-          PasswordHash: formData.password,
+          username: formData.username,
+          email: formData.email,
+          password_hash: formData.password,
         })
         .then(() => window.alert("Account created successfully"))
         .catch((err) => window.alert(err.message));
