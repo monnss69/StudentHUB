@@ -8,7 +8,7 @@ const Login = () => {
   // State for form data and error handling
   const [formData, setFormData] = useState({
     username: '',
-    passwordHash: ''  // Changed from password to match your backend
+    password: ''
   });
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
@@ -27,7 +27,7 @@ const Login = () => {
       // Call the login API
       const response = await apiService.userLogin({
         username: formData.username,
-        password: formData.passwordHash
+        password: formData.password
       });
 
       // The JWT token is automatically set as a cookie by your backend

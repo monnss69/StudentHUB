@@ -16,8 +16,8 @@ type User struct {
 }
 
 type AuthenticateUser struct {
-	Username     string `json:"username" gorm:"type:varchar(50);not null"`
-	PasswordHash string `json:"password" gorm:"column:password_hash;type:varchar(255);not null"`
+	Username string `json:"username" gorm:"type:varchar(50);not null"`
+	Password string `json:"password" gorm:"column:password_hash;type:varchar(255);not null"`
 }
 type Category struct {
 	ID          uuid.UUID `gorm:"type:uuid;primary_key;default:gen_random_uuid()"`

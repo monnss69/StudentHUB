@@ -88,15 +88,15 @@ export const apiService = {
     },
     logout: async () => {
         try {
-            // Clear the cookie on the server side
             const userConfirm = window.confirm('Are you sure you want to logout?');
             if (userConfirm) {
                 await api.post('/auth/logout');
+                // Reset the api instance defaults
+                api.defaults.headers.common['Authorization'] = '';
                 return true;
             }
         } catch (error) {
             console.error('Error during logout:', error);
-            // Even if the server call fails, we still want to clear local state
             return true;
         }
     },

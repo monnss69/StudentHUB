@@ -46,14 +46,16 @@ func AuthenticateUser(c *gin.Context) {
 	var user interfaces.User
 	result := DB.Where("username = ?", authUser.Username).First(&user)
 	if result.Error != nil {
-		c.JSON(http.StatusUnauthorized, gin.H{"error": "Wrong username/password"})
+		c.JSON(http.StatusUnauthorized, gin.H{"error": "Wrong username"})
 		return
 	}
 
+	currPassword, _ := bcrypt.GenerateFromPassword([]byte(authUser.Password), bcrypt.DefaultCost)
+
 	// Compare the provided password with stored hash
-	err := bcrypt.CompareHashAndPassword([]byte(user.PasswordHash), []byte(authUser.PasswordHash))
+	err := bcrypt.CompareHashAndPassword([]byte(user.PasswordHash), []byte(currPassword))
 	if err != nil {
-		c.JSON(http.StatusUnauthorized, gin.H{"error": "Wrong username/password"})
+		c.JSON(http.StatusUnauthorized, gin.H{"error": "Wrong password"})
 		return
 	} else {
 		tokenString, err := auth.CreateToken(user.Username)
