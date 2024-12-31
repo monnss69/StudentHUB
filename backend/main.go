@@ -3,6 +3,8 @@ package main
 import (
 	"backend/auth"
 	"backend/db"
+	"net/http"
+	"os"
 
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
@@ -14,9 +16,9 @@ func main() {
 
 	router := gin.Default()
 
-	// Set up CORS
+	// Set up CORS for your production frontend URL
 	router.Use(cors.New(cors.Config{
-		AllowOrigins:     []string{"http://localhost:3000"}, // Your React app URL
+		AllowOrigins:     []string{"http://localhost:3000"}, // Update with your Vercel frontend URL
 		AllowMethods:     []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
 		AllowHeaders:     []string{"Origin", "Content-Type", "Accept"},
 		AllowCredentials: true,
@@ -47,5 +49,13 @@ func main() {
 	// Category route
 	router.GET("/category", db.GetCategory)
 
-	router.Run(":3333")
+	// Export Gin handler for Vercel
+	httpHandler := http.HandlerFunc(router.ServeHTTP)
+
+	port := os.Getenv("PORT") // Vercel dynamically assigns a port
+	if port == "" {
+		port = "3333" // Default to 8080 for local testing
+	}
+
+	http.ListenAndServe(":"+port, httpHandler)
 }

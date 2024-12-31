@@ -5,11 +5,12 @@ import (
 	"backend/interfaces"
 	"log"
 	"net/http"
-
-	"golang.org/x/crypto/bcrypt"
+	"os"
 
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
+	"github.com/joho/godotenv"
+	"golang.org/x/crypto/bcrypt"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
@@ -18,12 +19,35 @@ var DB *gorm.DB
 
 // Initialize initializes the database connection
 func Initialize() {
-	var err error
-	DB, err = gorm.Open(postgres.Open("host=localhost user=postgres password=<> dbname=postgres port=5432 sslmode=disable"), &gorm.Config{})
+	// Load environment variables from the .env file
+	err := godotenv.Load()
+	if err != nil {
+		log.Println("Warning: No .env file found. Ensure environment variables are set.")
+	}
+
+	// Get database connection URL from the environment
+	databaseURL := os.Getenv("SUPABASE_DATABASE_URL")
+	if databaseURL == "" {
+		log.Fatal("Error: SUPABASE_DATABASE_URL not set in environment")
+	}
+
+	// Connect to the database using GORM
+	DB, err = gorm.Open(postgres.Open(databaseURL), &gorm.Config{})
 	if err != nil {
 		log.Fatal("Failed to connect to database:", err)
 	}
-	log.Println("Successfully connected to database!")
+
+	log.Println("Successfully connected to the database!")
+
+	// Set up connection pool settings
+	sqlDB, err := DB.DB()
+	if err != nil {
+		log.Fatal("Failed to get database instance:", err)
+	}
+
+	// Connection pool settings
+	sqlDB.SetMaxIdleConns(10)
+	sqlDB.SetMaxOpenConns(100)
 }
 
 func LogOutUser(c *gin.Context) {
